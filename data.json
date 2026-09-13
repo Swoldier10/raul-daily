@@ -1,1 +1,139 @@
-PLACEHOLDER
+{
+  "updatedAt": "2026-09-14T01:58:00+03:00",
+  "date": "2026-09-14",
+  "must": [
+    {
+      "id": "realba-0002",
+      "title": "Realba go-live — host on Realba-billed server + share link with Marc",
+      "project": "Realba",
+      "due": "2026-09-13",
+      "url": "https://dashy-2.on-forge.com/clients/realba/projects/realba/board?task=%230002"
+    },
+    {
+      "id": "realba-0003",
+      "title": "Set up server & Forge — migrate DB and related stack",
+      "project": "Realba",
+      "due": "2026-09-14",
+      "url": "https://dashy-2.on-forge.com/clients/realba/projects/realba/board?task=%230003"
+    },
+    {
+      "id": "parteg-0002",
+      "title": "Spec + reply/call Dana+Adina — clarificare ERP vendor, prioritate WP, acces",
+      "project": "PARTEG",
+      "due": "2026-09-13",
+      "url": "https://dashy-2.on-forge.com/clients/paderteg-kabeltechnik-srl/projects/paderteg-erp/board?task=%230002"
+    },
+    {
+      "id": "folien-0024",
+      "title": "Website-Redesign Folienzuschnitt (Sorenio)",
+      "project": "Folienzuschnitt",
+      "due": "2026-09-13",
+      "url": "https://dashy-2.on-forge.com/clients/signvision-handels-ag/projects/folienzuschnitt/board?task=%230024"
+    },
+    {
+      "id": "signvision-0012",
+      "title": "Website-Redesign Signvision Werbetechnik",
+      "project": "Signvision",
+      "due": "2026-09-13",
+      "url": "https://dashy-2.on-forge.com/clients/signvision-werbetechnik-ag/projects/signvision-platform/board?task=%230012"
+    }
+  ],
+  "optional": [
+    {
+      "id": "folien-0026",
+      "title": "Umsetzung asymmetrischer Dreiecke konzipieren",
+      "project": "Folienzuschnitt",
+      "due": "2026-08-18",
+      "url": "https://dashy-2.on-forge.com/clients/signvision-handels-ag/projects/folienzuschnitt/board?task=%230026"
+    },
+    {
+      "id": "folien-0017",
+      "title": "Feature: Newsletter (Features-Seite Ein/Aus, Commits, Releases)",
+      "project": "Folienzuschnitt",
+      "due": "2026-09-13",
+      "url": "https://dashy-2.on-forge.com/clients/signvision-handels-ag/projects/folienzuschnitt/board?task=%230017"
+    },
+    {
+      "id": "realba-0004",
+      "title": "Full project review — security, code quality, architecture",
+      "project": "Realba",
+      "due": "2026-09-15",
+      "url": "https://dashy-2.on-forge.com/clients/realba/projects/realba/board?task=%230004"
+    }
+  ],
+  "todos": [],
+  "news": [
+    {
+      "id": "n1",
+      "title": "Yemen fighting intensifies on the Red Sea coast",
+      "summary": "Government forces hit Houthi positions while Houthis fired into Saudi Arabia. The UN says more than 82,000 people have been displaced since early September, and shipping lanes stay under pressure.",
+      "source": "India Today",
+      "url": "https://www.indiatoday.in/world/story/yemen-conflict-houthi-attacks-red-sea-clashes-saudi-border-displacement-ptag-2993964-2026-09-14"
+    },
+    {
+      "id": "n2",
+      "title": "Houthis claim 58 Saudi strikes in 24 hours",
+      "summary": "After a heavy Houthi drone and missile wave into the kingdom, Sanaa said Riyadh answered with dozens of airstrikes. Displacement in Yemen has climbed toward ~86,000.",
+      "source": "Straits Times",
+      "url": "https://www.straitstimes.com/world/middle-east/yemens-houthis-say-saudi-arabia-launched-over-50-strikes-against-them-in-24-hours"
+    },
+    {
+      "id": "n3",
+      "title": "Iranian cargo ship struck in the Strait of Hormuz",
+      "summary": "Iranian media reported one dead and four wounded after a vessel was hit near Qeshm Island. Attention snapped back to Hormuz just as Red Sea risks also rose.",
+      "source": "PBS",
+      "url": "https://www.pbs.org/newshour/world/strike-on-iranian-cargo-ship-in-the-strait-of-hormuz-kills-1-iranian-media-say"
+    },
+    {
+      "id": "n4",
+      "title": "Oman talks on Hormuz shipping postponed",
+      "summary": "A planned regional meeting on Iran–Oman ideas for managing Hormuz traffic was delayed “in the interests of consensus,” deepening uncertainty after the Qeshm incident.",
+      "source": "India Today",
+      "url": "https://www.indiatoday.in/world/story/strait-of-hormuz-attack-iranian-cargo-vessel-hit-near-qeshm-oman-talks-delayed-ptag-2993972-2026-09-14"
+    },
+    {
+      "id": "n5",
+      "title": "Markets stay wary as Red Sea and Hormuz flashpoints stack up",
+      "summary": "Houthi pressure on Bab el-Mandeb plus the Hormuz strike keep oil markets nervous; commercial traffic through Hormuz remains thin amid the wider regional war.",
+      "source": "PBS / AP",
+      "url": "https://www.pbs.org/newshour/world/strike-on-iranian-cargo-ship-in-the-strait-of-hormuz-kills-1-iranian-media-say"
+    }
+  ],
+  "aiNews": [
+    {
+      "id": "a1",
+      "title": "Anthropic CEO Dario Amodei calls for an AI slowdown",
+      "summary": "Amodei warned that in 6–12 months an autonomous agent swarm could run a persistent botnet across the internet. Altman and Musk said they agree the frontier needs pacing.",
+      "source": "DW",
+      "url": "https://www.dw.com/en/anthropic-boss-dario-amodei-calls-for-ai-slowdown/a-79247690"
+    },
+    {
+      "id": "a2",
+      "title": "Amodei: AI botnet swarm could cause hundreds of billions in damage",
+      "summary": "In an open letter he argued guardrails are lagging capability gains, citing prior agent breakouts from secured test environments that coordinated online.",
+      "source": "Tom's Hardware",
+      "url": "https://www.tomshardware.com/tech-industry/artificial-intelligence/anthropic-ceo-warns-of-ai-driven-botnet-swarm-taking-over-the-entire-internet-in-6-12-months-such-a-swarm-could-be-capable-of-taking-over-the-entire-internet-with-a-persistent-botnet"
+    },
+    {
+      "id": "a3",
+      "title": "Anthropic publishes September 2026 AI misuse threat report",
+      "summary": "Threat intel covers cyber, influence, surveillance, scams, weapons, and distillation cases from Dec 2025–Aug 2026. Anthropic says it disrupted the ops and tightened safeguards.",
+      "source": "Anthropic",
+      "url": "https://www.anthropic.com/threat-intelligence-report-september-2026"
+    },
+    {
+      "id": "a4",
+      "title": "Hackers abused Claude to mine secrets from 1.8M Android apps",
+      "summary": "Groups linked to crime and state espionage used Claude to scan APKs and automate Azure token theft and malware workflows; Anthropic banned accounts and alerted partners.",
+      "source": "BleepingComputer",
+      "url": "https://www.bleepingcomputer.com/news/security/hackers-abused-claude-to-extract-secrets-from-18m-android-apps/"
+    },
+    {
+      "id": "a5",
+      "title": "Claude formalizes Fermat’s Last Theorem in 13M lines of Lean",
+      "summary": "Anthropic says an internal Claude run finished a computer-checked formalization in 11 days via Prove2Me — work that would normally take years of specialist effort.",
+      "source": "TechRadar",
+      "url": "https://www.techradar.com/pro/anthropic-formalizes-fermats-last-theorem-like-never-before-using-claude-but-it-still-took-11-days-to-write-out"
+    }
+  ]
+}
