@@ -2,127 +2,408 @@
 <html lang="ro">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Daily — Raul</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="light only" />
+  <title>Raul — Dashboard</title>
   <style>
     :root {
-      --bg: #0f1115;
-      --card: #1a1d24;
-      --text: #e8eaed;
-      --muted: #9aa0a6;
-      --accent: #7aa2ff;
-      --ok: #3dd68c;
-      --border: #2a2f3a;
+      --bg: #f4f6f9;
+      --surface: #ffffff;
+      --surface-2: #f0f3f8;
+      --text: #12151c;
+      --muted: #5c6575;
+      --border: #e2e7ef;
+      --accent: #2f6fed;
+      --accent-soft: #e8f0ff;
+      --ok: #1a9f63;
+      --warn: #c47a12;
+      --danger: #c23b3b;
+      --shadow: 0 1px 2px rgba(16,24,40,.04), 0 8px 24px rgba(16,24,40,.06);
+      --radius: 16px;
+      --sidebar: 240px;
+      --nav-h: 64px;
+      --safe-b: env(safe-area-inset-bottom, 0px);
     }
     * { box-sizing: border-box; }
+    html, body { height: 100%; }
     body {
       margin: 0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       background: var(--bg);
       color: var(--text);
       line-height: 1.45;
-      padding: 1rem 1rem 3rem;
+      -webkit-font-smoothing: antialiased;
     }
-    header {
-      max-width: 720px;
-      margin: 0 auto 1.25rem;
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    button { font: inherit; }
+
+    .app {
+      display: grid;
+      grid-template-columns: var(--sidebar) 1fr;
+      min-height: 100%;
     }
-    h1 { font-size: 1.55rem; margin: 0 0 .35rem; font-weight: 650; }
-    .meta { color: var(--muted); font-size: .9rem; }
-    main { max-width: 720px; margin: 0 auto; display: grid; gap: 1rem; }
-    section {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 1rem 1rem .75rem;
+
+    /* Sidebar */
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: 1.25rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
     }
-    h2 {
+    .brand {
+      padding: 0 .5rem;
+    }
+    .brand h1 {
+      margin: 0;
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .brand p {
+      margin: .2rem 0 0;
+      color: var(--muted);
       font-size: .85rem;
-      margin: 0 0 .75rem;
-      letter-spacing: .04em;
-      text-transform: uppercase;
+    }
+    .nav {
+      display: flex;
+      flex-direction: column;
+      gap: .35rem;
+    }
+    .nav button {
+      display: flex;
+      align-items: center;
+      gap: .7rem;
+      width: 100%;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      text-align: left;
+      padding: .7rem .85rem;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 550;
+    }
+    .nav button .ico { width: 1.25rem; text-align: center; opacity: .9; }
+    .nav button.active {
+      background: var(--accent-soft);
       color: var(--accent);
     }
-    ul { list-style: none; margin: 0; padding: 0; }
-    li.task {
-      display: flex;
-      gap: .75rem;
-      align-items: flex-start;
-      padding: .65rem 0;
+    .nav button:hover:not(.active) { background: var(--surface-2); color: var(--text); }
+    .sidebar-foot {
+      margin-top: auto;
+      padding: .75rem .85rem;
+      color: var(--muted);
+      font-size: .75rem;
       border-top: 1px solid var(--border);
     }
-    li.task:first-child { border-top: none; }
+
+    /* Main */
+    .main {
+      padding: 1.25rem 1.5rem 2.5rem;
+      max-width: 980px;
+      width: 100%;
+    }
+    .page-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: .75rem;
+      margin-bottom: 1.25rem;
+    }
+    .page-head h2 {
+      margin: 0;
+      font-size: 1.55rem;
+      letter-spacing: -0.03em;
+      font-weight: 720;
+    }
+    .page-head .sub { color: var(--muted); font-size: .9rem; margin-top: .25rem; }
+
+    .tabs {
+      display: inline-flex;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: .2rem;
+      gap: .15rem;
+    }
+    .tabs button {
+      border: 0;
+      background: transparent;
+      padding: .45rem .95rem;
+      border-radius: 999px;
+      cursor: pointer;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: .9rem;
+    }
+    .tabs button.active {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .grid-stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: .85rem;
+      margin-bottom: 1.25rem;
+    }
+    .stat {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem 1.05rem;
+      box-shadow: var(--shadow);
+    }
+    .stat .label { color: var(--muted); font-size: .78rem; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+    .stat .value { font-size: 1.65rem; font-weight: 720; margin-top: .25rem; letter-spacing: -0.03em; }
+    .stat .hint { color: var(--muted); font-size: .8rem; margin-top: .15rem; }
+
+    .stack { display: grid; gap: 1rem; }
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .panel-h {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: .75rem;
+      padding: .95rem 1.1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .panel-h h3 { margin: 0; font-size: 1rem; font-weight: 700; }
+    .panel-h .meta { color: var(--muted); font-size: .82rem; }
+    .panel-b { padding: .35rem 0; }
+
+    .empty {
+      padding: 1.25rem 1.1rem;
+      color: var(--muted);
+      font-size: .95rem;
+    }
+    .banner {
+      margin-bottom: 1rem;
+      padding: .85rem 1rem;
+      border-radius: 12px;
+      background: #fff7e8;
+      border: 1px solid #f0d9a8;
+      color: #7a5310;
+      font-size: .9rem;
+    }
+
+    /* Task / payment rows */
+    .row {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: .85rem;
+      align-items: start;
+      padding: .9rem 1.1rem;
+      border-top: 1px solid var(--border);
+    }
+    .row:first-child { border-top: 0; }
+    .row.done .title { text-decoration: line-through; color: var(--muted); }
     input[type=checkbox] {
-      width: 1.25rem;
-      height: 1.25rem;
-      margin-top: .15rem;
+      width: 1.2rem;
+      height: 1.2rem;
+      margin-top: .2rem;
       accent-color: var(--ok);
       flex-shrink: 0;
     }
-    .title { flex: 1; }
-    .title.done { text-decoration: line-through; color: var(--muted); }
-    .sub { display: block; color: var(--muted); font-size: .8rem; margin-top: .15rem; }
-    a { color: var(--accent); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    .error {
-      background: #3a1f24;
-      border-color: #6b3038;
-      color: #ffb4b4;
+    .title {
+      font-weight: 650;
+      font-size: .98rem;
+      letter-spacing: -0.01em;
     }
-    .empty { color: var(--muted); font-size: .9rem; }
+    .title a { color: inherit; }
+    .title a:hover { color: var(--accent); }
+    .meta-line {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .4rem .55rem;
+      margin-top: .4rem;
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: .3rem;
+      padding: .18rem .55rem;
+      border-radius: 999px;
+      background: var(--surface-2);
+      color: var(--muted);
+      font-size: .75rem;
+      font-weight: 600;
+      border: 1px solid var(--border);
+    }
+    .chip.due-soon { background: #fff4e5; border-color: #f0d2a0; color: var(--warn); }
+    .chip.overdue { background: #fdecec; border-color: #f0b4b4; color: var(--danger); }
+    .chip.project { background: var(--accent-soft); border-color: #c9dbff; color: #2458c7; }
+    .chip.tag { text-transform: uppercase; letter-spacing: .03em; font-size: .7rem; }
+    .amount {
+      font-weight: 720;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+      font-size: 1rem;
+    }
+    .amount .curr { color: var(--muted); font-weight: 600; font-size: .82rem; margin-left: .2rem; }
+
+    /* News */
     article.news {
-      padding: .85rem 0;
+      padding: 1.15rem 1.15rem 1.25rem;
       border-top: 1px solid var(--border);
     }
-    article.news:first-of-type { border-top: none; padding-top: .15rem; }
-    article.news h3 {
-      margin: 0 0 .4rem;
-      font-size: 1.02rem;
-      font-weight: 600;
-      line-height: 1.35;
+    article.news:first-child { border-top: 0; }
+    article.news h4 {
+      margin: 0 0 .55rem;
+      font-size: 1.08rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
     }
-    article.news h3 a { color: var(--text); }
-    article.news h3 a:hover { color: var(--accent); }
+    article.news h4 a { color: var(--text); }
+    article.news h4 a:hover { color: var(--accent); }
     article.news .summary {
-      margin: 0 0 .45rem;
-      color: #c5c9d1;
-      font-size: .92rem;
-      line-height: 1.5;
+      margin: 0;
+      color: #2a3140;
+      font-size: .95rem;
+      line-height: 1.65;
+      white-space: pre-wrap;
     }
-    article.news .meta-row {
-      font-size: .78rem;
-      color: var(--muted);
+    article.news .foot {
+      margin-top: .7rem;
       display: flex;
-      gap: .75rem;
       flex-wrap: wrap;
+      gap: .65rem;
       align-items: center;
+      font-size: .82rem;
+      color: var(--muted);
     }
-    article.news .more {
-      font-weight: 500;
+    article.news .more { font-weight: 650; }
+
+    .dash-cols {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 1rem;
+    }
+    .section-label {
+      margin: 0 0 .55rem;
+      font-size: .78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      color: var(--muted);
+    }
+    .hidden { display: none !important; }
+
+    /* Mobile bottom nav */
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      left: 0; right: 0; bottom: 0;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: .35rem .5rem calc(.35rem + var(--safe-b));
+      z-index: 40;
+      justify-content: space-around;
+    }
+    .mobile-nav button {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      padding: .45rem .35rem;
+      border-radius: 10px;
+      min-width: 64px;
+      cursor: pointer;
+      font-size: .68rem;
+      font-weight: 650;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .2rem;
+    }
+    .mobile-nav button .ico { font-size: 1.05rem; }
+    .mobile-nav button.active { color: var(--accent); background: var(--accent-soft); }
+
+    @media (max-width: 960px) {
+      .grid-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .dash-cols { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 800px) {
+      .app { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .mobile-nav { display: flex; }
+      .main {
+        padding: 1rem 1rem calc(5.5rem + var(--safe-b));
+      }
+      .page-head h2 { font-size: 1.35rem; }
+      .row { grid-template-columns: auto 1fr; }
+      .row .amount { grid-column: 2; justify-self: start; margin-top: -.2rem; }
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1 id="greeting">Bună, Raul</h1>
-    <div class="meta" id="meta">Se încarcă…</div>
-  </header>
-  <main id="app"></main>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <h1 id="greeting">Bună, Raul</h1>
+        <p id="brand-date">—</p>
+      </div>
+      <nav class="nav" id="side-nav">
+        <button type="button" data-view="dashboard" class="active"><span class="ico">⌂</span> Dashboard</button>
+        <button type="button" data-view="tasks"><span class="ico">☑</span> Tasks</button>
+        <button type="button" data-view="news"><span class="ico">◎</span> News</button>
+        <button type="button" data-view="payments"><span class="ico">₴</span> Payments</button>
+      </nav>
+      <div class="sidebar-foot" id="updated">UI preview</div>
+    </aside>
+
+    <main class="main">
+      <div id="view-dashboard" class="view"></div>
+      <div id="view-tasks" class="view hidden"></div>
+      <div id="view-news" class="view hidden"></div>
+      <div id="view-payments" class="view hidden"></div>
+    </main>
+  </div>
+
+  <nav class="mobile-nav" id="mobile-nav">
+    <button type="button" data-view="dashboard" class="active"><span class="ico">⌂</span>Home</button>
+    <button type="button" data-view="tasks"><span class="ico">☑</span>Tasks</button>
+    <button type="button" data-view="news"><span class="ico">◎</span>News</button>
+    <button type="button" data-view="payments"><span class="ico">₴</span>Pay</button>
+  </nav>
+
   <script>
+    const TZ = 'Europe/Bucharest';
     const DATE_KEY = () => new Intl.DateTimeFormat('en-CA', {
-      timeZone: 'Europe/Bucharest', year: 'numeric', month: '2-digit', day: '2-digit'
+      timeZone: TZ, year: 'numeric', month: '2-digit', day: '2-digit'
     }).format(new Date());
 
     function greetingForNow() {
       const hour = Number(new Intl.DateTimeFormat('en-GB', {
-        timeZone: 'Europe/Bucharest', hour: 'numeric', hour12: false
+        timeZone: TZ, hour: 'numeric', hour12: false
       }).format(new Date()));
       if (hour < 12) return 'Bună dimineața, Raul';
       if (hour < 18) return 'Bună ziua, Raul';
       return 'Bună seara, Raul';
     }
 
-    const storageKey = (date) => `daily-checks:${date}`;
+    function fmtDateNice(iso) {
+      if (!iso) return '';
+      try {
+        const d = new Date(iso + 'T12:00:00');
+        return new Intl.DateTimeFormat('ro-RO', { weekday: 'short', day: 'numeric', month: 'short' }).format(d);
+      } catch { return iso; }
+    }
+
+    function storageKey(date) { return `personal-dash-checks:${date}`; }
     function loadChecks(date) {
       try { return JSON.parse(localStorage.getItem(storageKey(date)) || '{}'); }
       catch { return {}; }
@@ -131,143 +412,391 @@
       localStorage.setItem(storageKey(date), JSON.stringify(map));
     }
 
-    function taskRow(item, checks, onToggle, kind) {
-      const id = `${kind}:${item.id}`;
-      const checked = !!checks[id];
-      const li = document.createElement('li');
-      li.className = 'task';
+    let DATA = null;
+    let VIEW = 'dashboard';
+    let TASK_TAB = 'today';
+    let CHECKS = {};
+
+    function setView(name) {
+      VIEW = name;
+      document.querySelectorAll('.view').forEach(el => el.classList.add('hidden'));
+      document.getElementById('view-' + name).classList.remove('hidden');
+      document.querySelectorAll('#side-nav button, #mobile-nav button').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.view === name);
+      });
+      render();
+    }
+
+    function toggleCheck(id, val) {
+      CHECKS[id] = val;
+      saveChecks(DATA.date || DATE_KEY(), CHECKS);
+      render();
+    }
+
+    function dueChip(due, today) {
+      if (!due) return null;
+      const chip = document.createElement('span');
+      chip.className = 'chip';
+      chip.textContent = 'due ' + fmtDateNice(due);
+      if (due < today) chip.classList.add('overdue');
+      else if (due === today) chip.classList.add('due-soon');
+      return chip;
+    }
+
+    function taskRow(task, kind) {
+      const id = `task:${kind}:${task.id}`;
+      const done = !!CHECKS[id];
+      const row = document.createElement('div');
+      row.className = 'row' + (done ? ' done' : '');
+
       const cb = document.createElement('input');
       cb.type = 'checkbox';
-      cb.checked = checked;
-      cb.addEventListener('change', () => onToggle(id, cb.checked));
-      const wrap = document.createElement('div');
-      wrap.className = 'title' + (checked ? ' done' : '');
-      if (item.url) {
+      cb.checked = done;
+      cb.addEventListener('change', () => toggleCheck(id, cb.checked));
+
+      const mid = document.createElement('div');
+      const title = document.createElement('div');
+      title.className = 'title';
+      if (task.url) {
         const a = document.createElement('a');
-        a.href = item.url;
-        a.target = '_blank';
-        a.rel = 'noopener';
-        a.textContent = item.title;
-        wrap.appendChild(a);
+        a.href = task.url; a.target = '_blank'; a.rel = 'noopener';
+        a.textContent = task.title;
+        title.appendChild(a);
       } else {
-        wrap.appendChild(document.createTextNode(item.title));
+        title.textContent = task.title;
       }
-      const bits = [];
-      if (item.project) bits.push(item.project);
-      if (item.due) bits.push('due ' + item.due);
-      if (bits.length) {
-        const sub = document.createElement('span');
-        sub.className = 'sub';
-        sub.textContent = bits.join(' · ');
-        wrap.appendChild(sub);
+      mid.appendChild(title);
+
+      const meta = document.createElement('div');
+      meta.className = 'meta-line';
+      if (task.project) {
+        const c = document.createElement('span');
+        c.className = 'chip project';
+        c.textContent = task.project;
+        meta.appendChild(c);
       }
-      li.appendChild(cb);
-      li.appendChild(wrap);
-      return li;
+      if (task.ref) {
+        const c = document.createElement('span');
+        c.className = 'chip';
+        c.textContent = task.ref;
+        meta.appendChild(c);
+      }
+      if (task.tag) {
+        const c = document.createElement('span');
+        c.className = 'chip tag';
+        c.textContent = task.tag;
+        meta.appendChild(c);
+      }
+      if (task.status) {
+        const c = document.createElement('span');
+        c.className = 'chip';
+        c.textContent = task.status;
+        meta.appendChild(c);
+      }
+      const dc = dueChip(task.due, DATA.date);
+      if (dc) meta.appendChild(dc);
+      if (task.priority) {
+        const c = document.createElement('span');
+        c.className = 'chip';
+        c.textContent = task.priority;
+        meta.appendChild(c);
+      }
+      mid.appendChild(meta);
+
+      if (task.notes) {
+        const n = document.createElement('div');
+        n.style.cssText = 'margin-top:.45rem;color:var(--muted);font-size:.86rem;line-height:1.45';
+        n.textContent = task.notes;
+        mid.appendChild(n);
+      }
+
+      row.appendChild(cb);
+      row.appendChild(mid);
+      const spacer = document.createElement('div');
+      row.appendChild(spacer);
+      return row;
     }
 
-    function taskSection(title, items, checks, onToggle, kind) {
-      const sec = document.createElement('section');
-      const h = document.createElement('h2');
-      h.textContent = title;
-      sec.appendChild(h);
-      if (!items || !items.length) {
-        const p = document.createElement('p');
-        p.className = 'empty';
-        p.textContent = 'Nimic aici.';
-        sec.appendChild(p);
-        return sec;
+    function paymentRow(p) {
+      const id = `pay:${p.id}`;
+      const done = !!CHECKS[id];
+      const row = document.createElement('div');
+      row.className = 'row' + (done ? ' done' : '');
+
+      const cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.checked = done;
+      cb.addEventListener('change', () => toggleCheck(id, cb.checked));
+
+      const mid = document.createElement('div');
+      const title = document.createElement('div');
+      title.className = 'title';
+      title.textContent = p.name;
+      mid.appendChild(title);
+      const meta = document.createElement('div');
+      meta.className = 'meta-line';
+      if (p.scope) {
+        const c = document.createElement('span');
+        c.className = 'chip';
+        c.textContent = p.scope;
+        meta.appendChild(c);
       }
-      const ul = document.createElement('ul');
-      items.forEach(it => ul.appendChild(taskRow(it, checks, onToggle, kind)));
-      sec.appendChild(ul);
-      return sec;
+      if (p.cadence) {
+        const c = document.createElement('span');
+        c.className = 'chip';
+        c.textContent = p.cadence;
+        meta.appendChild(c);
+      }
+      const dc = dueChip(p.due, DATA.date);
+      if (dc) meta.appendChild(dc);
+      mid.appendChild(meta);
+      if (p.notes) {
+        const n = document.createElement('div');
+        n.style.cssText = 'margin-top:.4rem;color:var(--muted);font-size:.86rem';
+        n.textContent = p.notes;
+        mid.appendChild(n);
+      }
+
+      const amt = document.createElement('div');
+      amt.className = 'amount';
+      amt.innerHTML = `${p.amount}<span class="curr">${p.currency || ''}</span>`;
+
+      row.appendChild(cb);
+      row.appendChild(mid);
+      row.appendChild(amt);
+      return row;
     }
 
-    function newsSection(title, items) {
-      const sec = document.createElement('section');
-      const h = document.createElement('h2');
-      h.textContent = title;
-      sec.appendChild(h);
-      if (!items || !items.length) {
-        const p = document.createElement('p');
-        p.className = 'empty';
-        p.textContent = 'Nimic aici.';
-        sec.appendChild(p);
-        return sec;
+    function panel(title, metaText, rowsOrEmpty) {
+      const p = document.createElement('section');
+      p.className = 'panel';
+      const h = document.createElement('div');
+      h.className = 'panel-h';
+      const left = document.createElement('div');
+      const h3 = document.createElement('h3');
+      h3.textContent = title;
+      left.appendChild(h3);
+      h.appendChild(left);
+      if (metaText) {
+        const m = document.createElement('div');
+        m.className = 'meta';
+        m.textContent = metaText;
+        h.appendChild(m);
       }
-      items.forEach(it => {
-        const art = document.createElement('article');
-        art.className = 'news';
-        const h3 = document.createElement('h3');
-        if (it.url) {
-          const a = document.createElement('a');
-          a.href = it.url;
-          a.target = '_blank';
-          a.rel = 'noopener';
-          a.textContent = it.title;
-          h3.appendChild(a);
-        } else {
-          h3.textContent = it.title;
-        }
-        art.appendChild(h3);
-        if (it.summary) {
-          const p = document.createElement('p');
-          p.className = 'summary';
-          p.textContent = it.summary;
-          art.appendChild(p);
-        }
-        const meta = document.createElement('div');
-        meta.className = 'meta-row';
-        if (it.source) {
-          const s = document.createElement('span');
-          s.textContent = it.source;
-          meta.appendChild(s);
-        }
-        if (it.url) {
-          const more = document.createElement('a');
-          more.className = 'more';
-          more.href = it.url;
-          more.target = '_blank';
-          more.rel = 'noopener';
-          more.textContent = 'Citește mai mult';
-          meta.appendChild(more);
-        }
-        art.appendChild(meta);
-        sec.appendChild(art);
+      p.appendChild(h);
+      const b = document.createElement('div');
+      b.className = 'panel-b';
+      if (!rowsOrEmpty || !rowsOrEmpty.length) {
+        const e = document.createElement('div');
+        e.className = 'empty';
+        e.textContent = 'Nimic aici.';
+        b.appendChild(e);
+      } else {
+        rowsOrEmpty.forEach(el => b.appendChild(el));
+      }
+      p.appendChild(b);
+      return p;
+    }
+
+    function renderDashboard() {
+      const root = document.getElementById('view-dashboard');
+      root.innerHTML = '';
+      const head = document.createElement('div');
+      head.className = 'page-head';
+      head.innerHTML = `<div><h2>Dashboard</h2><div class="sub">Astăzi și săptămâna asta, pe scurt</div></div>`;
+      root.appendChild(head);
+
+      const todayTasks = DATA.tasksToday || [];
+      const weekTasks = DATA.tasksWeek || [];
+      const payToday = DATA.paymentsToday || [];
+      const payWeek = DATA.paymentsWeek || [];
+
+      const stats = document.createElement('div');
+      stats.className = 'grid-stats';
+      const cells = [
+        ['Tasks azi', todayTasks.length, 'de făcut / due'],
+        ['Tasks săptămână', weekTasks.length, 'inclusiv azi'],
+        ['Plăți azi', payToday.length, 'scadente'],
+        ['Plăți săptămână', payWeek.length, 'inclusiv azi'],
+      ];
+      cells.forEach(([label, value, hint]) => {
+        const s = document.createElement('div');
+        s.className = 'stat';
+        s.innerHTML = `<div class="label">${label}</div><div class="value">${value}</div><div class="hint">${hint}</div>`;
+        stats.appendChild(s);
       });
-      return sec;
+      root.appendChild(stats);
+
+      const cols = document.createElement('div');
+      cols.className = 'dash-cols';
+      const left = document.createElement('div');
+      left.className = 'stack';
+      left.appendChild(panel('De făcut azi', todayTasks.length + ' items', todayTasks.map(t => taskRow(t, 'today'))));
+      left.appendChild(panel('Restul săptămânii', weekTasks.filter(t => t.due !== DATA.date).length + ' items',
+        weekTasks.filter(t => t.due !== DATA.date).map(t => taskRow(t, 'week'))));
+      const right = document.createElement('div');
+      right.className = 'stack';
+      right.appendChild(panel('Plăți azi', '', payToday.map(paymentRow)));
+      right.appendChild(panel('Plăți săptămâna asta', '', payWeek.filter(p => p.due !== DATA.date).map(paymentRow)));
+      const newsPeek = (DATA.news || []).slice(0, 2);
+      const newsRows = newsPeek.map(n => {
+        const wrap = document.createElement('div');
+        wrap.style.padding = '.85rem 1.1rem';
+        wrap.style.borderTop = '1px solid var(--border)';
+        const t = document.createElement('div');
+        t.className = 'title';
+        t.style.fontSize = '.95rem';
+        t.textContent = n.title;
+        const s = document.createElement('div');
+        s.style.cssText = 'margin-top:.35rem;color:var(--muted);font-size:.86rem;line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden';
+        s.textContent = n.summary || '';
+        wrap.appendChild(t); wrap.appendChild(s);
+        return wrap;
+      });
+      if (newsRows[0]) newsRows[0].style.borderTop = '0';
+      right.appendChild(panel('News (preview)', 'vezi News', newsRows));
+      cols.appendChild(left);
+      cols.appendChild(right);
+      root.appendChild(cols);
     }
+
+    function renderTasks() {
+      const root = document.getElementById('view-tasks');
+      root.innerHTML = '';
+      const head = document.createElement('div');
+      head.className = 'page-head';
+      const left = document.createElement('div');
+      left.innerHTML = `<h2>Tasks</h2><div class="sub">Dashy + personale — day & week</div>`;
+      const tabs = document.createElement('div');
+      tabs.className = 'tabs';
+      ['today', 'week'].forEach(tab => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.textContent = tab === 'today' ? 'Azi' : 'Săptămâna';
+        b.className = TASK_TAB === tab ? 'active' : '';
+        b.addEventListener('click', () => { TASK_TAB = tab; render(); });
+        tabs.appendChild(b);
+      });
+      head.appendChild(left);
+      head.appendChild(tabs);
+      root.appendChild(head);
+
+      const list = TASK_TAB === 'today' ? (DATA.tasksToday || []) : (DATA.tasksWeek || []);
+      const kind = TASK_TAB === 'today' ? 'today' : 'week';
+      const label = TASK_TAB === 'today' ? 'Tasks azi' : 'Tasks săptămâna asta';
+      root.appendChild(panel(label, list.length + ' items', list.map(t => taskRow(t, kind))));
+    }
+
+    function renderNews() {
+      const root = document.getElementById('view-news');
+      root.innerHTML = '';
+      const head = document.createElement('div');
+      head.className = 'page-head';
+      head.innerHTML = `<div><h2>News</h2><div class="sub">Sumar lung — link doar dacă vrei detalii</div></div>`;
+      root.appendChild(head);
+
+      const world = document.createElement('section');
+      world.className = 'panel';
+      world.innerHTML = `<div class="panel-h"><h3>Top news — 24h</h3></div>`;
+      const wb = document.createElement('div');
+      wb.className = 'panel-b';
+      (DATA.news || []).forEach(n => wb.appendChild(newsArticle(n)));
+      if (!(DATA.news || []).length) wb.innerHTML = '<div class="empty">Nimic aici.</div>';
+      world.appendChild(wb);
+      root.appendChild(world);
+
+      const ai = document.createElement('section');
+      ai.className = 'panel';
+      ai.style.marginTop = '1rem';
+      ai.innerHTML = `<div class="panel-h"><h3>Top AI — 24h</h3></div>`;
+      const ab = document.createElement('div');
+      ab.className = 'panel-b';
+      (DATA.aiNews || []).forEach(n => ab.appendChild(newsArticle(n)));
+      if (!(DATA.aiNews || []).length) ab.innerHTML = '<div class="empty">Nimic aici.</div>';
+      ai.appendChild(ab);
+      root.appendChild(ai);
+    }
+
+    function newsArticle(n) {
+      const art = document.createElement('article');
+      art.className = 'news';
+      const h = document.createElement('h4');
+      if (n.url) {
+        const a = document.createElement('a');
+        a.href = n.url; a.target = '_blank'; a.rel = 'noopener';
+        a.textContent = n.title;
+        h.appendChild(a);
+      } else h.textContent = n.title;
+      art.appendChild(h);
+      const p = document.createElement('p');
+      p.className = 'summary';
+      p.textContent = n.summary || '';
+      art.appendChild(p);
+      const foot = document.createElement('div');
+      foot.className = 'foot';
+      if (n.source) {
+        const s = document.createElement('span');
+        s.textContent = n.source;
+        foot.appendChild(s);
+      }
+      if (n.url) {
+        const more = document.createElement('a');
+        more.className = 'more';
+        more.href = n.url; more.target = '_blank'; more.rel = 'noopener';
+        more.textContent = 'Citește sursa';
+        foot.appendChild(more);
+      }
+      art.appendChild(foot);
+      return art;
+    }
+
+    function renderPayments() {
+      const root = document.getElementById('view-payments');
+      root.innerHTML = '';
+      const head = document.createElement('div');
+      head.className = 'page-head';
+      head.innerHTML = `<div><h2>Payments</h2><div class="sub">Scadente azi și săptămâna asta</div></div>`;
+      root.appendChild(head);
+      if (DATA.paymentsSample) {
+        const b = document.createElement('div');
+        b.className = 'banner';
+        b.textContent = 'UI preview — plățile de mai jos sunt date de exemplu. Logică live (subscriptions.md) vine după.';
+        root.appendChild(b);
+      }
+      const stack = document.createElement('div');
+      stack.className = 'stack';
+      stack.appendChild(panel('Azi', '', (DATA.paymentsToday || []).map(paymentRow)));
+      stack.appendChild(panel('Restul săptămânii', '', (DATA.paymentsWeek || []).filter(p => p.due !== DATA.date).map(paymentRow)));
+      root.appendChild(stack);
+    }
+
+    function render() {
+      if (!DATA) return;
+      document.getElementById('greeting').textContent = greetingForNow();
+      document.getElementById('brand-date').textContent = DATA.date || DATE_KEY();
+      document.getElementById('updated').textContent = DATA.updatedAt
+        ? 'Actualizat ' + DATA.updatedAt
+        : 'UI preview';
+      if (VIEW === 'dashboard') renderDashboard();
+      if (VIEW === 'tasks') renderTasks();
+      if (VIEW === 'news') renderNews();
+      if (VIEW === 'payments') renderPayments();
+    }
+
+    document.querySelectorAll('#side-nav button, #mobile-nav button').forEach(btn => {
+      btn.addEventListener('click', () => setView(btn.dataset.view));
+    });
 
     async function main() {
-      document.getElementById('greeting').textContent = greetingForNow();
-      const app = document.getElementById('app');
-      const meta = document.getElementById('meta');
       try {
         const res = await fetch('data.json?ts=' + Date.now());
         if (!res.ok) throw new Error('HTTP ' + res.status);
-        const data = await res.json();
-        const date = data.date || DATE_KEY();
-        meta.textContent = date + (data.updatedAt ? ' · actualizat ' + data.updatedAt : '');
-        let checks = loadChecks(date);
-        const onToggle = (id, val) => {
-          checks[id] = val;
-          saveChecks(date, checks);
-          main();
-        };
-        app.innerHTML = '';
-        app.appendChild(taskSection('Trebuie azi (5)', data.must || [], checks, onToggle, 'must'));
-        app.appendChild(taskSection('Opțional (3)', data.optional || [], checks, onToggle, 'opt'));
-        app.appendChild(taskSection('Todos personale', data.todos || [], checks, onToggle, 'todo'));
-        app.appendChild(newsSection('Top news — 24h', data.news || []));
-        app.appendChild(newsSection('Top AI — 24h', data.aiNews || []));
+        DATA = await res.json();
+        CHECKS = loadChecks(DATA.date || DATE_KEY());
+        render();
       } catch (e) {
-        app.innerHTML = '';
-        const sec = document.createElement('section');
-        sec.className = 'error';
-        sec.textContent = 'Nu pot încărca data.json: ' + e.message;
-        app.appendChild(sec);
-        meta.textContent = DATE_KEY();
+        document.getElementById('view-dashboard').innerHTML =
+          `<div class="panel"><div class="empty">Nu pot încărca data.json: ${e.message}</div></div>`;
       }
     }
     main();
